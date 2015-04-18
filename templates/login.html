@@ -1,0 +1,11 @@
+{% extends 'template.html' %}
+{% block content %}
+<h1>Welcome to Flasktaskr.</h1>
+<h3>Please login to access your tasks.</h3>
+<form method="post" action="/">
+    Username: <input type="text" name="username" value="{{ request.form.username }}"><br/>
+    Password: <input type="password" name="username" value="{{ request.form.password }}"><br/>
+    <input type="submit" value="Login">
+</form>
+<p><em>Use 'admin' for username and password</em></p>
+{% endblock %}
