@@ -1,6 +1,7 @@
 from flask import Flask, flash, redirect, render_template, request, session, url_for, g
 from functools import wraps
 import sqlite3
+from forms import AddTaskForm
 
 
 app = Flask(__name__)
@@ -11,7 +12,7 @@ def connect_db():
 
 def login_required(test):
     @wraps(test)
-    def wrap(*arg, **kwargs):
+    def wrap(*args, **kwargs):
         if 'logged_in' in session:
             return test(*args, **kwargs)
         else:
@@ -75,7 +76,7 @@ def new_task():
 @login_required
 def complete(task_id):
     g.db = connect_db()
-    g.execute("UPDATE tasks SET status=0 WHERE task_id=" + str(task_id))
+    g.db.execute("UPDATE tasks SET status=0 WHERE task_id=" + str(task_id))
     g.db.commit()
     g.db.close()
     flash('The task was marked as complete.')
@@ -86,7 +87,7 @@ def complete(task_id):
 @login_required
 def delete_entry(task_id):
     g.db = connect_db()
-    g.execute("DELETE FROM tasks WHERE task_id=" + str(task_id))
+    g.db.execute("DELETE FROM tasks WHERE task_id=" + str(task_id))
     g.db.commit()
     g.db.close()
     flash('The task was deleted.')
